@@ -1,0 +1,14 @@
+try:
+    weight = float(input("How much do you weigh?: "))
+# catch if the input is not numerical:
+except:
+    print("Invalid input, please retry and enter a numerical value.")
+    exit()
+
+unit = input("Pounds (l) or Kilograms (k)?: ")
+if unit.upper() == "L":
+    convert = weight * 0.453592
+    print("You weigh " + str(round(convert, 2)) + " kilograms")
+else:
+    convert = weight * 2.204620823516057
+    print("You weigh " + str(round(convert, 2)) + " pounds.")
