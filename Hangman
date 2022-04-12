@@ -1,0 +1,74 @@
+import pandas as pd
+from random import randint
+
+# get some word data
+df = pd.read_csv('words.csv')
+words = df['WORDS']
+
+# choose a word at random
+random_index = randint(0, len(words)-1)
+correct_word = words[random_index].lower()
+# print(correct_word)
+
+
+guessed_list = [0]*len(correct_word)
+# print(guessed_list)
+
+# print the guessed word
+
+
+def print_guessed_word():
+    for i, number in enumerate(guessed_list):
+        if number == 0:
+            print('_', end=' ')
+        else:
+            print(correct_word[i], end=' ')
+    print()
+
+
+print_guessed_word()
+
+
+def check_for_win():
+    for number in guessed_list:
+        if number == 0:
+            return False
+    return True
+
+
+def print_bold(x, end='\n'):
+    print('\033[1m' + x + '\033[0m', end=end)
+
+
+previously_guessed_letters = set([])
+lives_remaining = 7
+while lives_remaining > 0:
+
+    # guess a letter, check if letter is in the correct word
+    guessed_letter = input('Guess a Letter: ').lower()
+
+    if guessed_letter in previously_guessed_letters:
+        print('You already guessed that letter, and now you must pay the price😈😈😈')
+        lives_remaining -= 1
+    elif guessed_letter in correct_word:
+        for i, letter in enumerate(correct_word):
+            if letter == guessed_letter:
+                guessed_list[i] = 1
+    else:
+        lives_remaining -= 1
+
+    previously_guessed_letters.add(guessed_letter)
+
+    # print the guessed word
+    print_guessed_word()
+    print(f'{lives_remaining} lives remaining')
+    print_bold("Guessed letters: ", end='')
+    print(' '.join(sorted(previously_guessed_letters)))
+    print()
+
+    if check_for_win():
+        print("Congrats! You didn't hang the man👑😀👑")
+        break
+
+if lives_remaining == 0:
+    print('YOU COMMITTED MURDER💀☠️')
